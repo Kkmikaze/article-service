@@ -18,6 +18,7 @@ RUN apk add --no-cache tzdata \
 # Stage 2: Minimal final image
 FROM scratch
 
+COPY --from=builder /app/.env /.env
 COPY --from=builder /app/engine /engine
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /etc/localtime /etc/localtime
