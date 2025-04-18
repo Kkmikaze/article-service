@@ -1,0 +1,21 @@
+services:
+  app:
+    restart: unless-stopped
+    container_name: article-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_VERSION: "${SERVICE_VERSION}"
+    volumes:
+      - ./.env:/app/.env
+    ports:
+      - "${GATEWAY_PORT}:80" # Gateway mapped correctly
+      - "${RPC_PORT}:8080"    # RPC mapped correctly
+    env_file:
+      - .env  # Automatically load environment variables from .env file
+    healthcheck:
+      test: curl -f http://localhost:${GATEWAY_PORT}/api/v1/cms/healthz || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 3

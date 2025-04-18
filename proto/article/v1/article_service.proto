@@ -1,0 +1,250 @@
+syntax = "proto3";
+
+package article.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "article/v1/article_message.proto";
+
+option go_package = "github.com/Kkmikaze/article-service/proto/article/v1;articlev1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Article Service",
+    version: "v1.0.0"
+  },
+  responses: {
+    key: "400",
+    value: {
+      description: 'Bad Request',
+      schema: {
+        json_schema: {ref: ".article.v1.BadRequest"}
+      }
+    }
+  },
+  responses: {
+    key: "401",
+    value: {
+      description: 'Unauthorized',
+      schema: {
+        json_schema: {ref: ".article.v1.Unauthorized"}
+      }
+    }
+  },
+  responses: {
+    key: "403",
+    value: {
+      description: 'Forbidden',
+      schema: {
+        json_schema: {ref: ".article.v1.Forbidden"}
+      }
+    }
+  },
+  responses: {
+    key: "404",
+    value: {
+      description: 'Not Found',
+      schema: {
+        json_schema: {ref: ".article.v1.NotFound"}
+      }
+    }
+  },
+  responses: {
+    key: "419",
+    value: {
+      description: 'Conflict',
+      schema: {
+        json_schema: {ref: ".article.v1.Conflict"}
+      }
+    }
+  },
+  responses: {
+    key: "422",
+    value: {
+      description: 'Unprocessable Entity',
+      schema: {
+        json_schema: {ref: ".article.v1.UnprocessableEntity"}
+      }
+    }
+  },
+  responses: {
+    key: "500",
+    value: {
+      description: 'Internal Server Error',
+      schema: {
+        json_schema: {ref: ".article.v1.InternalServerError"}
+      }
+    }
+  }
+};
+
+service ArticleService {
+  rpc HealthzCheck (google.protobuf.Empty) returns (HealthCheckResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/article-service/healthz",
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.HealthCheckResponse"}
+          }
+        }
+      };
+    };
+  }
+
+  // Post proto service
+  rpc GetPosts (GetPostsRequest) returns (GetPostsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/article-service/posts",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Post"]
+      summary: "Get Posts"
+      description: "This API for get list of posts that associated with event",
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.GetPostsResponse"}
+          }
+        }
+      };
+    };
+  }
+
+  rpc GetPostByID (ParamID) returns (GetPostByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/article-service/posts/{id}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Post"]
+      summary: "Get Post"
+      description: "This API for get detail of article",
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.GetPostByIDResponse"}
+          }
+        }
+      };
+    };
+  }
+
+  // Internal Post proto service
+  rpc InternalGetPosts (InternalGetPostsRequest) returns (InternalGetPostsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/article-service/internal/posts",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Internal - Post"]
+      summary: "Get Posts"
+      description: "This API for get list of posts",
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.InternalGetPostsResponse"}
+          }
+        }
+      };
+    };
+  }
+
+  rpc InternalCreatePost (InternalCreatePostRequest) returns (CommonResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/article-service/internal/posts",
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Internal - Post"]
+      summary: "Create Post"
+      description: "This API for create post.",
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.CommonResponse"}
+          }
+        }
+      };
+    };
+  }
+
+  rpc InternalGetPostByID (ParamID) returns (InternalGetPostByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/article-service/internal/posts/{id}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Internal - Post"]
+      summary: "Get Post Detail by Post ID"
+      description: "This API for get post detail by post id",
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.InternalGetPostByIDResponse"}
+          }
+        }
+      };
+    };
+  }
+
+  rpc InternalUpdatePost (InternalUpdatePostRequest) returns (CommonResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/article-service/internal/posts/{id}",
+      body: "body"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Internal - Post"]
+      summary: "Update Post"
+      description: "This API for update post.",
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.CommonResponse"}
+          }
+        }
+      };
+    };
+  }
+
+  rpc InternalDeletePostByID (ParamID) returns (CommonResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/article-service/internal/posts/{id}",
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Internal - Post"]
+      summary: "Get Post Delete by Post ID"
+      description: "This API for get post delete by post id",
+      responses: {
+        key: "200",
+        value: {
+          description: "OK";
+          schema: {
+            json_schema: {ref: ".article.v1.CommonResponse"}
+          }
+        }
+      };
+    };
+  }
+}

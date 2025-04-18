@@ -1,0 +1,1176 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Article Service",
+    "version": "v1.0.0"
+  },
+  "tags": [
+    {
+      "name": "ArticleService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/article-service/healthz": {
+      "get": {
+        "operationId": "ArticleService_HealthzCheck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1HealthCheckResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ArticleService"
+        ]
+      }
+    },
+    "/api/v1/article-service/internal/posts": {
+      "get": {
+        "summary": "Get Posts",
+        "description": "This API for get list of posts",
+        "operationId": "ArticleService_InternalGetPosts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1InternalGetPostsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "description": "Search Posts By article name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Page number to get data, make value to -1 if you want ignore the pagination to get all rows.",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "itemPerPage",
+            "description": "Limit data per page, leave it empty if the request page is -1",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          }
+        ],
+        "tags": [
+          "Internal - Post"
+        ]
+      },
+      "post": {
+        "summary": "Create Post",
+        "description": "This API for create post.",
+        "operationId": "ArticleService_InternalCreatePost",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1CommonResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Create Post Request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1InternalCreatePostRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Internal - Post"
+        ]
+      }
+    },
+    "/api/v1/article-service/internal/posts/{id}": {
+      "get": {
+        "summary": "Get Post Detail by Post ID",
+        "description": "This API for get post detail by post id",
+        "operationId": "ArticleService_InternalGetPostByID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1InternalGetPostByIDResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Internal - Post"
+        ]
+      },
+      "delete": {
+        "summary": "Get Post Delete by Post ID",
+        "description": "This API for get post delete by post id",
+        "operationId": "ArticleService_InternalDeletePostByID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1CommonResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Internal - Post"
+        ]
+      },
+      "put": {
+        "summary": "Update Post",
+        "description": "This API for update post.",
+        "operationId": "ArticleService_InternalUpdatePost",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1CommonResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InternalUpdatePostRequestBodyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Internal - Post"
+        ]
+      }
+    },
+    "/api/v1/article-service/posts": {
+      "get": {
+        "summary": "Get Posts",
+        "description": "This API for get list of posts that associated with event",
+        "operationId": "ArticleService_GetPosts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1GetPostsResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "description": "Search Posts By post name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Page number to get data, make value to -1 if you want ignore the pagination to get all rows.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "itemPerPage",
+            "description": "Limit data per page, leave it empty if the request page is -1",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Draft",
+              "Publish",
+              "Trash"
+            ],
+            "default": "Draft"
+          }
+        ],
+        "tags": [
+          "Post"
+        ]
+      }
+    },
+    "/api/v1/article-service/posts/{id}": {
+      "get": {
+        "summary": "Get Post",
+        "description": "This API for get detail of article",
+        "operationId": "ArticleService_GetPostByID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v1GetPostByIDResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/v1BadRequest"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/v1Unauthorized"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/v1Forbidden"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/v1NotFound"
+            }
+          },
+          "419": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/v1Conflict"
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "$ref": "#/definitions/v1UnprocessableEntity"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/v1InternalServerError"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Post"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "InternalUpdatePostRequestBodyRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Title of post"
+        },
+        "content": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "category": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "createdDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "updatedDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "status": {
+          "$ref": "#/definitions/v1PostStatus",
+          "example": "For the example can be: Draft, Publish or Trash"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1BadRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "400"
+        },
+        "status": {
+          "type": "string",
+          "example": "BAD REQUEST"
+        },
+        "message": {
+          "type": "string",
+          "example": "Bad Request"
+        },
+        "errors": {
+          "type": "object",
+          "example": {
+            "field": "the field is required"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1CommonResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "200"
+        },
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "message": {
+          "type": "string",
+          "example": "Message of common response."
+        }
+      }
+    },
+    "v1Conflict": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "419"
+        },
+        "status": {
+          "type": "string",
+          "example": "CONFLICT"
+        },
+        "message": {
+          "type": "string",
+          "example": "Item already exists."
+        }
+      }
+    },
+    "v1Forbidden": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "403"
+        },
+        "status": {
+          "type": "string",
+          "example": "FORBIDDEN"
+        },
+        "message": {
+          "type": "string",
+          "example": "You does not have correct access."
+        }
+      }
+    },
+    "v1GetPostByIDResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "200"
+        },
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "message": {
+          "type": "string",
+          "example": "Get article success."
+        },
+        "data": {
+          "$ref": "#/definitions/v1GetPostByIDResponseData"
+        }
+      }
+    },
+    "v1GetPostByIDResponseData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "b4f76920-ad2b-464a-a272-7af1db5288d3"
+        },
+        "title": {
+          "type": "string",
+          "example": "Title of post"
+        },
+        "content": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "category": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "createdDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "updatedDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "status": {
+          "$ref": "#/definitions/v1PostStatus",
+          "example": "For the example can be: Draft, Publish or Trash"
+        }
+      }
+    },
+    "v1GetPostsResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "200"
+        },
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "message": {
+          "type": "string",
+          "example": "Get List of posts success."
+        },
+        "data": {
+          "$ref": "#/definitions/v1GetPostsResponseData"
+        }
+      }
+    },
+    "v1GetPostsResponseData": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1GetPostsResponsePostData"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "uint64",
+          "example": "10",
+          "description": "Total data"
+        }
+      }
+    },
+    "v1GetPostsResponsePostData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "b4f76920-ad2b-464a-a272-7af1db5288d3"
+        },
+        "title": {
+          "type": "string",
+          "example": "Title of post"
+        },
+        "content": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "category": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "createdDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "updatedDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "status": {
+          "$ref": "#/definitions/v1PostStatus",
+          "example": "For the example can be: Draft, Publish or Trash"
+        }
+      }
+    },
+    "v1HealthCheckResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Service Running"
+        }
+      }
+    },
+    "v1InternalCreatePostRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Title of post"
+        },
+        "content": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "category": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "createdDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "updatedDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "status": {
+          "$ref": "#/definitions/v1PostStatus",
+          "example": "For the example can be: Draft, Publish or Trash"
+        }
+      },
+      "description": "Create Post Request",
+      "title": "Create Post Request",
+      "required": [
+        "title",
+        "content",
+        "category",
+        "status"
+      ]
+    },
+    "v1InternalGetPostByIDResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "200"
+        },
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "message": {
+          "type": "string",
+          "example": "Get article by id success."
+        },
+        "data": {
+          "$ref": "#/definitions/v1InternalGetPostByIDResponseData"
+        }
+      }
+    },
+    "v1InternalGetPostByIDResponseData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "b4f76920-ad2b-464a-a272-7af1db5288d3"
+        },
+        "title": {
+          "type": "string",
+          "example": "Title of post"
+        },
+        "content": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "category": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "createdDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "updatedDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "status": {
+          "$ref": "#/definitions/v1PostStatus",
+          "example": "For the example can be: Draft, Publish or Trash"
+        }
+      }
+    },
+    "v1InternalGetPostsResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "200"
+        },
+        "status": {
+          "type": "string",
+          "example": "OK"
+        },
+        "message": {
+          "type": "string",
+          "example": "Get List of articles success."
+        },
+        "data": {
+          "$ref": "#/definitions/v1InternalGetPostsResponseData"
+        }
+      }
+    },
+    "v1InternalGetPostsResponseData": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1InternalGetPostsResponsePostData"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "uint64",
+          "example": "10",
+          "description": "Total data"
+        }
+      }
+    },
+    "v1InternalGetPostsResponsePostData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "b4f76920-ad2b-464a-a272-7af1db5288d3"
+        },
+        "title": {
+          "type": "string",
+          "example": "Title of post"
+        },
+        "content": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "category": {
+          "type": "string",
+          "example": "Content can be free text or html"
+        },
+        "createdDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "updatedDate": {
+          "type": "string",
+          "example": "01 March 2024"
+        },
+        "status": {
+          "$ref": "#/definitions/v1PostStatus",
+          "example": "For the example can be: Draft, Publish or Trash"
+        }
+      }
+    },
+    "v1InternalServerError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "500"
+        },
+        "status": {
+          "type": "string",
+          "example": "INTERNAL SERVER ERROR"
+        },
+        "message": {
+          "type": "string",
+          "example": "Internal Server Error"
+        }
+      }
+    },
+    "v1NotFound": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "404"
+        },
+        "status": {
+          "type": "string",
+          "example": "NOT FOUND"
+        },
+        "message": {
+          "type": "string",
+          "example": "Item not found."
+        }
+      }
+    },
+    "v1PostStatus": {
+      "type": "string",
+      "enum": [
+        "Draft",
+        "Publish",
+        "Trash"
+      ],
+      "default": "Draft"
+    },
+    "v1Unauthorized": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "401"
+        },
+        "status": {
+          "type": "string",
+          "example": "UNAUTHORIZED"
+        },
+        "message": {
+          "type": "string",
+          "example": "Unauthorized"
+        }
+      }
+    },
+    "v1UnprocessableEntity": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "example": "422"
+        },
+        "status": {
+          "type": "string",
+          "example": "UNPROCESSABLE ENTITY"
+        },
+        "message": {
+          "type": "string",
+          "example": "Unprocessable entity"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,416 @@
+syntax = "proto3";
+
+package article.v1;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/Kkmikaze/article-service/proto/article/v1;articlev1";
+
+enum PostStatus {
+  Draft = 0;
+  Publish = 1;
+  Trash = 2;
+}
+
+message BadRequest {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"400\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"BAD REQUEST\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Bad Request\""
+  }];
+
+  map<string, string> errors = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "{\"field\": \"the field is required\"}"
+  }];
+}
+
+message Unauthorized {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"401\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"UNAUTHORIZED\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Unauthorized\""
+  }];
+}
+
+message Forbidden {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"403\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"FORBIDDEN\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"You does not have correct access.\""
+  }];
+}
+
+message NotFound {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"404\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"NOT FOUND\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Item not found.\""
+  }];
+}
+
+message Conflict {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"419\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"CONFLICT\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Item already exists.\""
+  }];
+}
+
+message UnprocessableEntity {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"422\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"UNPROCESSABLE ENTITY\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Unprocessable entity\""
+  }];
+}
+
+message InternalServerError {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"500\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"INTERNAL SERVER ERROR\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Internal Server Error\""
+  }];
+}
+
+message CommonResponse {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"200\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"OK\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Message of common response.\""
+  }];
+}
+
+message ParamID {
+  string id = 1;
+}
+
+message HealthCheckResponse {
+  string message = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Service Running\""
+  }];
+}
+
+// Post proto message
+message GetPostsRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Query Parameter Posts",
+      description: "Query Parameter Schema in Get Posts Request",
+    }
+  };
+
+  string search = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Search Posts By post name"
+  }];
+  int32 page = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Page number to get data, make value to -1 if you want ignore the pagination to get all rows."
+    example: "1"
+    default: "1"
+  }];
+  int32 item_per_page = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Limit data per page, leave it empty if the request page is -1",
+    example: "10"
+    default: "10"
+  }];
+  PostStatus status = 4;
+}
+
+message GetPostsResponse {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"200\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"OK\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Get List of posts success.\""
+  }];
+
+  message PostData {
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"b4f76920-ad2b-464a-a272-7af1db5288d3\""
+    }];
+    string title = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Title of post\""
+    }];
+    string content = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string category = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string created_date = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+    string updated_date = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+
+    PostStatus status = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"For the example can be: Draft, Publish or Trash\""
+    }];
+  }
+
+  message Data {
+    repeated PostData items = 1;
+    uint64 total = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Total data",
+      example: "\"10\""
+    }];
+  }
+
+  Data data = 4;
+}
+
+message GetPostByIDResponse {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"200\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"OK\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Get article success.\""
+  }];
+
+  message Data {
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"b4f76920-ad2b-464a-a272-7af1db5288d3\""
+    }];
+    string title = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Title of post\""
+    }];
+    string content = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string category = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string created_date = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+    string updated_date = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+
+    PostStatus status = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"For the example can be: Draft, Publish or Trash\""
+    }];
+  }
+  Data data = 4;
+}
+
+// Internal Post message
+message InternalGetPostsRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Query Parameter Posts",
+      description: "Query Parameter Schema in Get Posts Request",
+      required: ["page"]
+    }
+  };
+
+  string search = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Search Posts By article name"
+  }];
+  int32 page = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Page number to get data, make value to -1 if you want ignore the pagination to get all rows."
+    example: "1"
+    default: "1"
+  }];
+  int32 item_per_page = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Limit data per page, leave it empty if the request page is -1",
+    example: "10"
+    default: "10"
+  }];
+}
+
+message InternalGetPostsResponse {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"200\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"OK\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Get List of articles success.\""
+  }];
+
+  message PostData {
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"b4f76920-ad2b-464a-a272-7af1db5288d3\""
+    }];
+    string title = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Title of post\""
+    }];
+    string content = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string category = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string created_date = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+    string updated_date = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+
+    PostStatus status = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"For the example can be: Draft, Publish or Trash\""
+    }];
+  }
+
+  message Data {
+    repeated PostData items = 1;
+    uint64 total = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Total data",
+      example: "\"10\""
+    }];
+  }
+
+  Data data = 4;
+}
+
+message InternalCreatePostRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Create Post Request",
+      description: "Create Post Request",
+      required: [
+        "title",
+        "content",
+        "category",
+        "status"
+      ]
+    }
+  };
+
+  string title = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Title of post\""
+  }];
+  string content = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Content can be free text or html\""
+  }];
+  string category = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Content can be free text or html\""
+  }];
+  string created_date = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"01 March 2024\""
+  }];
+  string updated_date = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"01 March 2024\""
+  }];
+
+  PostStatus status = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"For the example can be: Draft, Publish or Trash\""
+  }];
+}
+
+message InternalGetPostByIDResponse {
+  uint32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"200\""
+  }];
+  string status = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"OK\""
+  }];
+  string message = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    example: "\"Get article by id success.\""
+  }];
+
+  message Data {
+
+    string id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"b4f76920-ad2b-464a-a272-7af1db5288d3\""
+    }];
+    string title = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Title of post\""
+    }];
+    string content = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string category = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string created_date = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+    string updated_date = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+
+    PostStatus status = 7 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"For the example can be: Draft, Publish or Trash\""
+    }];
+  }
+
+  Data data = 4;
+}
+
+message InternalUpdatePostRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update Post Request",
+      description: "Update Post Request",
+      required: ["id", "body"]
+    }
+  };
+
+  string id = 1;
+
+  message BodyRequest {
+    string title = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Title of post\""
+    }];
+    string content = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string category = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"Content can be free text or html\""
+    }];
+    string created_date = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+    string updated_date = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"01 March 2024\""
+    }];
+
+    PostStatus status = 6 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      example: "\"For the example can be: Draft, Publish or Trash\""
+    }];
+  }
+
+  BodyRequest body = 2;
+}
